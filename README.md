@@ -15,7 +15,7 @@ Install-SqlManagementStudio -ssmsSetupPath C:\Users\sqldba\Desktop\DBA\"
 
 ```
 
-#SqlDbaManager Kurulumu
+# SqlDbaManager Kurulumu
 
 1. SqlDbaManager Modülünü git clone yöntemi ile download edin.
 
@@ -29,7 +29,7 @@ Import-Module SqlDbaManager_dosya_yolu\SqlDbaManager.psd1
 ```
 # Versiyon Listesi ve İçerikleri
 
-1. Versiyon 1.0.0 
+Versiyon 1.0.0 
 
 - Install-SqlManagementStudio : SQL Server Management Studio Kurulumu
 - Install-SqlDatabase : SQL Server Database Engine Kurulumu
