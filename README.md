@@ -31,9 +31,9 @@ Import-Module SqlDbaManager_dosya_yolu\SqlDbaManager.psd1
 
 1. Versiyon 1.0.0 
 
-Install-SqlManagementStudio : SQL Server Management Studio Kurulumu
-Install-SqlDatabase : SQL Server Database Engine Kurulumu
-Install-PostSql : SQL Server Kurulum Sonrası Post Script Deployment İşlemleri
+- Install-SqlManagementStudio : SQL Server Management Studio Kurulumu
+- Install-SqlDatabase : SQL Server Database Engine Kurulumu
+- Install-PostSql : SQL Server Kurulum Sonrası Post Script Deployment İşlemleri
 
 # Geliştirilmekte Olan Özellikler
 
