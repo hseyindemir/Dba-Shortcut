@@ -4,7 +4,7 @@ SQL Veritabanı Yöneticileri için powershell üzerinde yazılmış açık kayn
 
 <img align="left" width="100" height="100" src="https://github.com/hseyindemir/SqlDbaManager/blob/master/Images/ps-icon.png">
 <img align="left" width="100" height="100" src="https://github.com/hseyindemir/SqlDbaManager/blob/master/Images/sql-icon.png">
-
+<br/>
 # SqlDbaManager Örnek Kullanımları
 
 ```powershell
