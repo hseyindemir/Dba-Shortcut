@@ -51,6 +51,54 @@ function Install-SqlManagementStudio {
     }
 }
 
+function Export-DatabaseVersionReport {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline)]
+        [ValidateScript({
+            if(-Not ($_ | Test-Path) ){
+                throw "File or folder does not exist" 
+            }
+            return $true
+        })]
+        [string]
+        $serverListFilePath,
+        [Parameter(ValueFromPipeline)]
+        [string]
+        $reportFilePath
+    )
+    
+    begin 
+    {
+        $databaseList = Get-Content -Path $serverListFilePath
+        if (Test-Path -Path $reportFilePath) 
+        {
+            Remove-Item -Path $reportFilePath
+        }
+      
+        
+
+    }
+    
+    process 
+    {
+        foreach ($db in $databaseList) 
+        {
+            Get-SqlInstance -ServerInstance $db |Select-Object DisplayName,Edition,VersionString | Export-Csv -Path $reportFilePath -Append -NoTypeInformation
+            
+        }
+
+
+    }
+    
+    end 
+    {
+
+        Write-Host "Database Version Report Completed in CSV File Format. Your Report is Available" $reportFilePath -BackgroundColor Black -ForegroundColor Green
+
+    }
+}
+
 function Install-SqlDatabase {
     [CmdletBinding()]
     param (
@@ -172,4 +220,82 @@ function Install-PostSql {
 }
 
 
+function Test-PendingReboot
+{
+ if (Get-ChildItem "HKLM:\Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending" -EA Ignore) { return $true }
+ if (Get-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -EA Ignore) { return $true }
+ if (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager" -Name PendingFileRenameOperations -EA Ignore) { return $true }
+ try { 
+   $util = [wmiclass]"\\.\root\ccm\clientsdk:CCM_ClientUtilities"
+   $status = $util.DetermineIfRebootPending()
+   if(($status -ne $null) -and $status.RebootPending){
+     return $true
+   }
+ }catch{}
+ 
+ return $false
+}
+function Export-RebootAndPatch {
+    [CmdletBinding()]
+    param (
+        # Parameter help description
+        [Parameter(ValueFromPipeline)]
+        [string]
+        $excelPath,
+        # Parameter help description
+        [Parameter(ValueFromPipeline)]
+        [string]
+        $excelFileName,
+        # Parameter help description
+        [Parameter(ValueFromPipeline)]
+        [string]
+        $serverListPath
+    )
+    
+    begin 
+    {
+        $servers = Get-Content $serverListPath
+        #Create New Data Table
+        $dt4RebootPatch = New-Object System.Data.DataTable("RebootAndPatchTable")
+        $serverColumn = New-Object system.Data.DataColumn ServerName,([string])
+        $rebootColumn = New-Object system.Data.DataColumn RebootStatus,([string])
+        $patchColumn = New-Object system.Data.DataColumn PatchLevel,([string])
+        $dt4RebootPatch.Columns.Add($serverColumn)
+        $dt4RebootPatch.Columns.Add($rebootColumn)
+        $dt4RebootPatch.Columns.Add($patchColumn)
+
+    }
+    
+    process 
+    {
+        foreach ($server in $servers) 
+        {
+            Write-Host "Collecting Information For " $server -BackgroundColor Black -ForegroundColor Green
+            $sqlVersion = Invoke-Sqlcmd -ServerInstance $server -Query "select @@version" | Select-Object Column1
+            Write-Host $sqlVersion
+
+            $newRecord = $dt4RebootPatch.NewRow()
+            $newRecord.ServerName = $server
+
+            #Write Reboot Status Check Code
+            $reboot=Invoke-Command -ScriptBlock ${function:Test-PendingReboot} -ComputerName $server
+            Write-Host $reboot
+            $newRecord.RebootStatus = $reboot
+            $newRecord.PatchLevel = $sqlVersion
+
+            #Son Patch Bilgisini Çeken Fonksiyon(Opsiyonel)
+
+            $dt4RebootPatch.Rows.Add($newRecord)
+           
+            
+        }
+        #Done
+        #Get-Process | Export-Csv -Path "$excelPath\$excelFileName" -Delimiter ";"
+        $dt4RebootPatch | Format-Table -AutoSize
+        $dt4RebootPatch | Export-Csv -Path "$excelPath\$excelFileName" -Delimiter ";" -NoTypeInformation
+    }
+    
+    end {
+    }
+}
 
