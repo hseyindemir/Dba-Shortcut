@@ -2,6 +2,7 @@
 
 SQL Veritabanı Yöneticileri için powershell üzerinde yazılmış açık kaynak bir kütüphanedir. Bu modül, Veritabanı yöneticisinin karşılaştığı operasyonel işlerin yönettiği tüm ortamlara standart bir şekilde uygulaması için geliştirilmektedir. 
 
+![ps-icon](https://github.com/hseyindemir/SqlDbaManager/blob/master/Images/ps-icon.png)
 
 # SqlDbaManager Örnek Kullanımları
 
