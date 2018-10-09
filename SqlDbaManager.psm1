@@ -76,8 +76,6 @@ function Export-DatabaseVersionReport {
             Remove-Item -Path $reportFilePath
         }
       
-        
-
     }
     
     process 
