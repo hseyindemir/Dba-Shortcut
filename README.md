@@ -40,7 +40,7 @@ Versiyon 2.0.0
 
 - Veritabanı Versiyon Raporu : Liste halinde verilen tüm veritabanlarının versiyonlarını csv dosyasına toplayan fonksiyon
 
-Versiyon 2.0.0 
+Versiyon 2.0.1 
 
 - Veritabanı Versiyon Raporu : Error handling geliştirmeleri,verbose özelliği eklendi.
 
