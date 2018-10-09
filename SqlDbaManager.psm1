@@ -84,7 +84,17 @@ function Export-DatabaseVersionReport {
     {
         foreach ($db in $databaseList) 
         {
-            Get-SqlInstance -ServerInstance $db |Select-Object DisplayName,Edition,VersionString | Export-Csv -Path $reportFilePath -Append -NoTypeInformation
+            try 
+            {
+                Get-SqlInstance -ServerInstance $db |Select-Object DisplayName,Edition,VersionString | Export-Csv -Path $reportFilePath -Append -NoTypeInformation
+                
+            }
+            catch 
+            {
+                Write-Host "Instance $db Could Not be Resolved. Please Check Connection for $db" -BackgroundColor Black -ForegroundColor White
+                
+            }
+            
             
         }
 
@@ -216,86 +226,6 @@ function Install-PostSql {
     end 
     {
         Write-Host "Sql Post Installation Function Completed" -ForegroundColor White -BackgroundColor Black
-    }
-}
-
-
-function Test-PendingReboot
-{
- if (Get-ChildItem "HKLM:\Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending" -EA Ignore) { return $true }
- if (Get-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -EA Ignore) { return $true }
- if (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager" -Name PendingFileRenameOperations -EA Ignore) { return $true }
- try { 
-   $util = [wmiclass]"\\.\root\ccm\clientsdk:CCM_ClientUtilities"
-   $status = $util.DetermineIfRebootPending()
-   if(($status -ne $null) -and $status.RebootPending){
-     return $true
-   }
- }catch{}
- 
- return $false
-}
-function Export-RebootAndPatch {
-    [CmdletBinding()]
-    param (
-        # Parameter help description
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $excelPath,
-        # Parameter help description
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $excelFileName,
-        # Parameter help description
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $serverListPath
-    )
-    
-    begin 
-    {
-        $servers = Get-Content $serverListPath
-        #Create New Data Table
-        $dt4RebootPatch = New-Object System.Data.DataTable("RebootAndPatchTable")
-        $serverColumn = New-Object system.Data.DataColumn ServerName,([string])
-        $rebootColumn = New-Object system.Data.DataColumn RebootStatus,([string])
-        $patchColumn = New-Object system.Data.DataColumn PatchLevel,([string])
-        $dt4RebootPatch.Columns.Add($serverColumn)
-        $dt4RebootPatch.Columns.Add($rebootColumn)
-        $dt4RebootPatch.Columns.Add($patchColumn)
-
-    }
-    
-    process 
-    {
-        foreach ($server in $servers) 
-        {
-            Write-Host "Collecting Information For " $server -BackgroundColor Black -ForegroundColor Green
-            $sqlVersion = Invoke-Sqlcmd -ServerInstance $server -Query "select @@version" | Select-Object Column1
-            Write-Host $sqlVersion
-
-            $newRecord = $dt4RebootPatch.NewRow()
-            $newRecord.ServerName = $server
-
-            #Write Reboot Status Check Code
-            $reboot=Invoke-Command -ScriptBlock ${function:Test-PendingReboot} -ComputerName $server
-            Write-Host $reboot
-            $newRecord.RebootStatus = $reboot
-            $newRecord.PatchLevel = $sqlVersion
-
-            #Son Patch Bilgisini Çeken Fonksiyon(Opsiyonel)
-
-            $dt4RebootPatch.Rows.Add($newRecord)
-           
-            
-        }
-        #Done
-        #Get-Process | Export-Csv -Path "$excelPath\$excelFileName" -Delimiter ";"
-        $dt4RebootPatch | Format-Table -AutoSize
-        $dt4RebootPatch | Export-Csv -Path "$excelPath\$excelFileName" -Delimiter ";" -NoTypeInformation
-    }
-    
-    end {
     }
 }
 

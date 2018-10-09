@@ -39,13 +39,12 @@ Versiyon 1.0.0
 Versiyon 2.0.0 
 
 - Veritabanı Versiyon Raporu : Liste halinde verilen tüm veritabanlarının versiyonlarını csv dosyasına toplayan fonksiyon
-- Veritabanı Sunucu Reboot Raporu : Liste halinde verilen tüm veritabanı sunucularının restart bekleyip beklemediğini csv dosyasına toplayan fonksiyon
 
 # Geliştirilmekte Olan Özellikler
 
-1. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon
-2. Veritabanı Versiyon Raporu : Error handling geliştirmeleri,verbose özelliği
-3. Veritabanı Sunucu Raporu : Error handling geliştirmeleri,verbose özelliği
+1. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon geliştiriliyor.
+2. Veritabanı Versiyon Raporu : Error handling geliştirmeleri,verbose özelliği geliştiriliyor. 
+3. Install-PostSql : Uzak Sunucu için post-installation özelliği geliştiriliyor.
 
 
 
