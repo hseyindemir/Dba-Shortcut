@@ -3,8 +3,8 @@
 SQL Veritabanı Yöneticileri için powershell üzerinde yazılmış açık kaynak bir kütüphanedir. Bu modül, Veritabanı yöneticisinin karşılaştığı operasyonel işlerin yönettiği tüm ortamlara standart bir şekilde uygulaması için geliştirilmektedir. 
 
 <img align="left" width="100" height="100" src="https://github.com/hseyindemir/SqlDbaManager/blob/master/Images/ps-icon.png">
-<img align="left" width="100" height="100" src="https://github.com/hseyindemir/SqlDbaManager/blob/master/Images/sql-icon.png">
-<br/>
+<img align="left" width="100" height="100" src="https://github.com/hseyindemir/SqlDbaManager/blob/master/Images/sql-icon.png">  
+
 # SqlDbaManager Örnek Kullanımları
 
 ```powershell
