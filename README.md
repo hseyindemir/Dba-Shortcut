@@ -35,11 +35,15 @@ Versiyon 1.0.0
 - Install-SqlDatabase : SQL Server Database Engine Kurulumu
 - Install-PostSql : SQL Server Kurulum Sonrası Post Script Deployment İşlemleri
 
+
+Versiyon 2.0.0 
+
+- Veritabanı Versiyon Raporu - Liste halinde verilen tüm veritabanlarının versiyonlarını csv dosyasına toplayan fonksiyon
+- Veritabanı Sunucu Reboot Raporu - Liste halinde verilen tüm veritabanı sunucularının restart bekleyip beklemediğini csv dosyasına toplayan fonksiyon
+
 # Geliştirilmekte Olan Özellikler
 
-1. Veritabanı Versiyon Raporu - Liste halinde verilen tüm veritabanlarının versiyonlarını csv dosyasına toplayan fonksiyon
-2. Veritabanı Sunucu Reboot Raporu - Liste halinde verilen tüm veritabanı sunucularının restart bekleyip beklemediğini csv dosyasına toplayan fonksiyon
-3. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon
+1. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon
 
 
 
