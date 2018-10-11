@@ -49,6 +49,6 @@ Versiyon 2.0.1
 
 1. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon geliştiriliyor.
 2. Install-PostSql : Uzak Sunucu için post-installation özelliği geliştiriliyor.
-
+3. Deploy-NewPackage : Ayrı bir modül oluşturulacak.
 
 
