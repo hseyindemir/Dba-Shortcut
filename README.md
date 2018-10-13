@@ -45,6 +45,10 @@ Versiyon 2.0.1
 
 - Veritabanı Versiyon Raporu : Error handling geliştirmeleri,verbose özelliği eklendi.
 
+Versiyon 2.0.2
+
+- Yeni eklenecek modüller için farklı klasör yapısı oluşturuldu.
+
 # Geliştirilmekte Olan Özellikler
 
 1. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon geliştiriliyor.
