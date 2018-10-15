@@ -32,9 +32,9 @@ Import-Module SqlDbaManager_dosya_yolu\SqlDbaManager.psd1
 
 Versiyon 1.0.0 
 
-- Install-SqlManagementStudio : SQL Server Management Studio Kurulumu
-- Install-SqlDatabase : SQL Server Database Engine Kurulumu
-- Install-PostSql : SQL Server Kurulum Sonrası Post Script Deployment İşlemleri
+- Install-SqlManagementStudio : SQL Server Management Studio Kurulumu (SqlDbaManager) 
+- Install-SqlDatabase : SQL Server Database Engine Kurulumu (SqlDbaManager) 
+- Install-PostSql : SQL Server Kurulum Sonrası Post Script Deployment İşlemleri (SqlDbaManager) 
 
 
 Versiyon 2.0.0 
@@ -48,6 +48,10 @@ Versiyon 2.0.1
 Versiyon 2.0.2
 
 - Yeni eklenecek modüller için farklı klasör yapısı oluşturuldu.
+
+Versiyon 3.0.2
+
+- Invoke-SqlLogShipping : SQL Server Log Shipping Setup&Implementation (SqlDrManager) 
 
 # Geliştirilmekte Olan Özellikler
 
