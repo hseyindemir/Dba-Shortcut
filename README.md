@@ -53,10 +53,6 @@ Versiyon 3.0.2
 
 - Invoke-SqlLogShipping : SQL Server Log Shipping Setup&Implementation (SqlDrManager) 
 
-# Geliştirilmekte Olan Özellikler
+Versiyon 3.1.2
 
-1. dbatools Best Practice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon geliştiriliyor.
-2. Install-PostSql : Uzak Sunucu için post-installation özelliği geliştiriliyor.
-3. Deploy-NewPackage : Ayrı bir modül oluşturulacak.
-
-
+- Install-dbatoolsBestPractice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon.
