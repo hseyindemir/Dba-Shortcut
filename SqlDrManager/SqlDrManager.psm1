@@ -30,18 +30,8 @@ function Invoke-SqlLogShipping {
     
             if ($Initialize) {$d = Get-DbaBackupHistory -SqlInstance $SourceServer -Database $SourceDatabase -IncludeCopyOnly -LastFull | select -ExpandProperty Start}
             else {$d = (Get-Date).AddDays(-2)}
-
-
-    
             $files = Get-DbaBackupHistory -SqlInstance $SourceServer -Database $SourceDatabase -IncludeCopyOnly -Since $d -Raw | Sort-Object -Property backupsetid | where -Property Start -LE (Get-Date).AddMinutes(-$DelayMinute) | select server, Start, Path, Type, @{Label = “rowid”; Expression = {$Global:seq; $Global:seq++;}}
 
-            if (!$d) 
-            {
-                Write-Host "Could not retrieve backup history. Please check backup dates and files."
-            }
-            else 
-            
-            {
                 if ($Initialize) {
                     $file = $files | where Type -EQ "Full" | select -ExpandProperty Path
                     if (($file.Substring(1,2)) -eq ":\" ) {$file = "\\$SourceServer\" +  $file.replace(":","$")} 
@@ -75,7 +65,6 @@ function Invoke-SqlLogShipping {
                 Write-Host (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") "Finished. `r" 
           
             }
-        }
             catch {
                 $ErrorMsg = $_.Exception.Message
                 return $ErrorMsg
