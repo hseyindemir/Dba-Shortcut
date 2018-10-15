@@ -75,6 +75,7 @@ function Invoke-SqlLogShipping {
                 Write-Host (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") "Finished. `r" 
           
             }
+        }
             catch {
                 $ErrorMsg = $_.Exception.Message
                 return $ErrorMsg
