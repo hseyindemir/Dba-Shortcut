@@ -1,4 +1,15 @@
 function Install-SqlManagementStudio {
+<#
+        .SYNOPSIS
+        SQL Serve Management Studio Kurulumu
+        .DESCRIPTION
+        SQL Server Management Studio kurulumunu için setup dosyasinin dizini parametre alarak gerekli kurulumu yapan fonksiyon
+        .EXAMPLE
+        Install-SqlManagementStudio -ssmsSetupPath F:\
+        .NOTES
+        Author: Huseyin Demir
+        Date:   June 15, 2018    
+#>
     [CmdletBinding()]
     param 
     (
@@ -12,13 +23,14 @@ function Install-SqlManagementStudio {
 
         $filepath="$ssmsSetupPath\SSMS-Setup-ENU.exe"
          
-        #If SSMS not present, download on next release
+        
         if (!(Test-Path $filepath)){
         
-        Write-Host "SSMS Not Found" -ForegroundColor Red
+        Write-Host "SSMS File Named SSMS-Setup-ENU.exe Not Found" -ForegroundColor Red
          
         }
-        else {
+        else 
+        {
          
         write-host "Located the SQL SSMS Installer binaries, moving on to install..."
         }
@@ -30,9 +42,10 @@ function Install-SqlManagementStudio {
         try 
         {
             write-host "Beginning SSMS 2017 install..." -nonewline
-            $Parms = " /Install /Quiet /Norestart /Logs log.txt"
+            $Parms = " /Install /Quiet /Norestart /INDICATEPROGRESS /Logs mySSMS.txt"
             $Prms = $Parms.Split(" ")
-            & "$filepath" $Prms | Out-Null
+            & "$filepath" $Prms | Out-String
+            
             Write-Host "SSMS installation complete" -ForegroundColor Green
         }
         catch 
@@ -45,69 +58,27 @@ function Install-SqlManagementStudio {
     
     end 
     {
-        #Get SQL Server Management Studio Software Details on Next Release
-
+        
+        Get-WmiObject -Class Win32_Product | Select-Object Name,Version | Where-Object { $_.Name -like '*SQL Server Management Studio*'}
         Write-Host "Please Check Your Installation" -ForegroundColor Green
     }
 }
 
-function Export-DatabaseVersionReport {
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromPipeline)]
-        [ValidateScript({
-            if(-Not ($_ | Test-Path) ){
-                throw "File or folder does not exist" 
-            }
-            return $true
-        })]
-        [string]
-        $serverListFilePath,
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $reportFilePath
-    )
-    
-    begin 
-    {
-        $databaseList = Get-Content -Path $serverListFilePath
-        if (Test-Path -Path $reportFilePath) 
-        {
-            Remove-Item -Path $reportFilePath
-        }
-      
-    }
-    
-    process 
-    {
-        foreach ($db in $databaseList) 
-        {
-            try 
-            {
-                Get-SqlInstance -ServerInstance $db |Select-Object DisplayName,Edition,VersionString | Export-Csv -Path $reportFilePath -Append -NoTypeInformation
-                
-            }
-            catch 
-            {
-                Write-Host "Instance $db Could Not be Resolved. Please Check Connection for $db" -BackgroundColor Black -ForegroundColor White
-                
-            }
-            
-            
-        }
 
-
-    }
-    
-    end 
-    {
-
-        Write-Host "Database Version Report Completed in CSV File Format. Your Report is Available" $reportFilePath -BackgroundColor Black -ForegroundColor Green
-
-    }
-}
 
 function Install-SqlDatabase {
+
+    <#
+        .SYNOPSIS
+        SQL Server Database Engine Kurulumu
+        .DESCRIPTION
+        SQL Server Database Engine kurulumunu için configuration file ve setup accountları ile yapan fonksiyon.
+        .EXAMPLE
+       Install-SqlDatabase -setupPath F:\setup.exe -configFilePath C:\config_file_ismi.ini -setupAccount DOMAIN\account_ismi -accountPasswd account_sifre -saPassWd saSifresi
+        .NOTES
+        Author: Huseyin Demir
+        Date:   June 15, 2018    
+#>
     [CmdletBinding()]
     param (
        
@@ -177,6 +148,19 @@ function Install-SqlDatabase {
 }
 
 function Install-PostSql {
+
+    
+    <#
+        .SYNOPSIS
+        SQL Server Kurulum Sonrası Post Configuration Fonksiyonu
+        .DESCRIPTION
+        SQL Server Kurulum sonrası tamamlanmak istenen post .sql uzantili dosyalarin toplu bir şekilde deploy edilmesini saglayan fonksiyon
+        .EXAMPLE
+       Install-PostSql -postScriptPath C:\postfolder\
+        .NOTES
+        Author: Huseyin Demir
+        Date:   June 15, 2018    
+#>
     [CmdletBinding()]
     param (
         
@@ -193,7 +177,7 @@ function Install-PostSql {
     
     begin 
     {
-        # Declare Localhost Parameters
+       
         $serverName = "localhost"
         $databaseName = "master"
         Write-Host "Starting Post Installation on SQL Server..." -ForegroundColor Green -BackgroundColor Black
@@ -228,6 +212,18 @@ function Install-PostSql {
 }
 
 function Install-dbatoolsBestPractice {
+
+        <#
+        .SYNOPSIS
+        SQL Server Kurulum Sonrası Post Configuration Fonksiyonu
+        .DESCRIPTION
+        SQL Server Kurulum sonrası tamamlanmak istenen best-practice configuration ayarlarının yapıld fonksiyon.
+        .EXAMPLE
+       Install-PostSql -postScriptPath C:\postfolder\
+        .NOTES
+        Author: Huseyin Demir
+        Date:   June 15, 2018    
+#>
     [CmdletBinding()]
     param 
     (
@@ -243,14 +239,14 @@ function Install-dbatoolsBestPractice {
     process {
 
         try {
-            #Install dbatools
+            
              $env:PSModulePath=[Environment]::GetEnvironmentVariable("PSModulePath", "Machine")
     
             if (Get-Module -ListAvailable -Name dbatools) {Write-Output "dbatools module exists."} 
             else {Write-Output "dbatools module does not exist."
                 Invoke-Expression (Invoke-WebRequest -UseBasicParsing https://dbatools.io/in)}
     
-            #set dbatools best practice
+            
             Write-Host "# Started dbatools"
             Set-DbaPowerPlan -ComputerName $serverName
             Write-Host "Powerplan Configuration was Done" -ForegroundColor Green -BackgroundColor Black

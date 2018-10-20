@@ -8,6 +8,9 @@ function Invoke-SqlLogShipping {
         Invoke-SqlLogShipping -SourceServer "sour-server-name -SourceDatabase "db-name" -DestinationServer "destination-server-name" -DestinationDataPath "data-file-path-destination" -DestinationLogPath "log-file-path-destination -DelayMinute 60
         .EXAMPLE
         Invoke-SqlLogShipping -SourceServer "sour-server-name -SourceDatabase "db-name" -DestinationServer "destination-server-name" -DestinationDataPath "data-file-path-destination" -DestinationLogPath "log-file-path-destination -Initialize -DelayMinute 60
+        .NOTES
+        Author: Ahmet Rende&Huseyin Demir
+        Date:   October 15, 2018    
     #>
     [CmdletBinding()] param (
     [Parameter(Mandatory=$true)][string]$SourceServer,
@@ -71,7 +74,54 @@ function Invoke-SqlLogShipping {
                 exit 2
             }
             }
+
+function Get-RestoreHealth 
+{
+<#
+        .SYNOPSIS
+        Log shipping kontrol fonksiyonu
+        .DESCRIPTION
+        Disaster amaci ile log shipping yapılan sunucuların güncel olup olmadigini kontrol eden fonksiyon.
+        Guncel Olmak = Last restore time < 120 dakika
+        .EXAMPLE
+        Get-RestoreHealth -DisasterServer your-server-name
+        .NOTES
+        Author: Ahmet Rende&Huseyin Demir
+        Date:   October 15, 2018    
+#>
+
+    [CmdletBinding()]
+    param 
+    (
+        [Parameter(Mandatory=$true)][string]$DisasterServer,
     
-            
-        
+    )
+    
+    begin 
+    {
+        Test-Connection -ComputerName $DisasterServer
+
     }
+    
+    process 
+    {
+        $databaseList = Get-DbaDatabase -SqlInstance $DisasterServer -ExcludeAllSystemDb | Select-Object Name
+
+        foreach($database in $databaseList)
+        {
+            $alertDate = (Get-Date).AddHours(-2)
+   
+            $lastRestoreDate = Get-DbaRestoreHistory -SqlInstance $DisasterServer -Database $database.Name -Last | Select-Object Database,backup_finish_date
+            if($alertDate -gt $lastRestoreDate.backup_finish_date)
+            {
+                Write-Host "Problem occured in Disaster for $database"
+            }
+            else
+            {
+                Write-Host "Problem not occured in Disaster for $database"
+            }
+        }   
+    
+    end {
+    }
+}
