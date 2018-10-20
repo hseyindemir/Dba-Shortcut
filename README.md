@@ -56,3 +56,11 @@ Versiyon 3.0.2
 Versiyon 3.1.2
 
 - Install-dbatoolsBestPractice : dbatools kütüphanesindeki tüm konfigürasyon best-practice'lerini veritabanına uygulayan fonksiyon.
+
+Versiyon 3.2.3
+
+- Get-DisasterHealth(SqlDrManager) : Disaster log shipping için healthcheck yapan fonksiyon geliştirildi.
+- Help Menü ve fonksiyon yazarları düzenlendi.
+- .gitignore dosyası oluşturuldu.
+- Invoke-Logshipping (SqlDrManager) : Function import sırasında yaşanan hata düzeltildi.
+- Install-SqlManagementStudio(SqlDbaManager) : Kurulum sonrası güncel SSMS bilgisini kullanıcıya ileten özellik geliştirildi.
