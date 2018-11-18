@@ -84,7 +84,7 @@ function Generate-IndexScript {
     
     end 
     {
-        Write-Host 'Generated Index Script in T-SQL Format'
+        Write-Host 'Generated Index Script in T-SQL Format.'
     }
 }
 

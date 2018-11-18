@@ -64,3 +64,8 @@ Versiyon 3.2.3
 - .gitignore dosyası oluşturuldu.
 - Invoke-Logshipping (SqlDrManager) : Function import sırasında yaşanan hata düzeltildi.
 - Install-SqlManagementStudio(SqlDbaManager) : Kurulum sonrası güncel SSMS bilgisini kullanıcıya ileten özellik geliştirildi.
+
+Versiyon 3.3.3
+
+- Generate-IndexScript : Tablo,alan isimleri ve index oluşturma parametreleri ile birlikte otomatik index scripti üreten fonksiyon geliştirmesi yapıldı. 
+
