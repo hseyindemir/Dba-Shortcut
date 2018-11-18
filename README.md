@@ -71,4 +71,3 @@ Versiyon 3.3.3
 - Install-MaintenancePack : whoisactive ve OLA gibi temel bakım prosedürlerini veritabanına yükleyen fonksiyon geliştirmesi yapıldı.
 - Maintenance-Starter-Pack klasörü eklenmesi yapıldı. Bu klasör içerinde SQL DBA için gerekli bakım scriptlerinin paylaşılması sağlandı. 
 
-test
