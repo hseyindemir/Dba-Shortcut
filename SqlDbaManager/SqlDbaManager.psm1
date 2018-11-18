@@ -264,3 +264,68 @@ function Install-dbatoolsBestPractice {
     }
 }
 
+function Install-ManintenancePack {
+
+    
+    <#
+        .SYNOPSIS
+        SQL Server Kurulum Sonrası Bakım Prosedürleri için Gerekli Fonksiyon
+        .DESCRIPTION
+        SQL Server Kurulum sonrası tamamlanmak istenen dba bakımları için gerekli .sql uzantili dosyalarin toplu bir şekilde deploy edilmesini saglayan fonksiyon
+        .EXAMPLE
+       Install-PostSql -postScriptPath C:\Maintenance-Starter-Pack\
+        .NOTES
+        Author: Huseyin Demir
+        Date:   June 15, 2018    
+#>
+    [CmdletBinding()]
+    param (
+        
+        [Parameter(ValueFromPipeline)]
+        [ValidateScript({
+            if(-Not ($_ | Test-Path) ){
+                throw "File or folder does not exist" 
+            }
+            return $true
+        })]
+        [string]
+        $postScriptPath
+    )
+    
+    begin 
+    {
+       
+        $serverName = "localhost"
+        $databaseName = "master"
+        Write-Host "Starting Maintenance-Pack on SQL Server..." -ForegroundColor Green -BackgroundColor Black
+    }
+    
+    process 
+    {
+        try {      
+            Write-Host "Started Maintenance-Pack on SQL Server..." -ForegroundColor Green -BackgroundColor Black
+            
+            foreach ($f in Get-ChildItem -path $postScriptPath -Filter *.sql -ea 1 | sort-object fullname )  { 
+               
+                $SqlFile = $f.fullname
+                invoke-sqlcmd -ServerInstance $serverName -Database $databaseName -InputFile $f.fullname -ea 1 -QueryTimeout 600 # | out-file -filepath $out -ea 0
+                Write-Host "# OK: $SqlFile"
+                $SqlFile = $NULL
+                #Start-Sleep -Seconds 1
+                }
+           
+             Write-Host "Finished Maintenance-Pack on SQL Server..."
+        }
+        catch {
+            $ErrorMsg = $_.Exception.Message
+            return "# FAILED: $SqlFile | $ErrorMsg"
+        }
+    }
+    
+    end 
+    {
+        Write-Host "Maintenance-Pack on SQL Server..." -ForegroundColor White -BackgroundColor Black
+        Write-Host "Resource 1 : http://whoisactive.com/downloads/" -ForegroundColor White -BackgroundColor Black
+        Write-Host "Resource 2 : https://ola.hallengren.com/" -ForegroundColor White -BackgroundColor Black
+    }
+}

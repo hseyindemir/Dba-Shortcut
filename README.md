@@ -68,4 +68,6 @@ Versiyon 3.2.3
 Versiyon 3.3.3
 
 - Generate-IndexScript : Tablo,alan isimleri ve index oluşturma parametreleri ile birlikte otomatik index scripti üreten fonksiyon geliştirmesi yapıldı. 
+- Install-MaintenancePack : whoisactive ve OLA gibi temel bakım prosedürlerini veritabanına yükleyen fonksiyon geliştirmesi yapıldı.
+- Maintenance-Starter-Pack klasörü eklenmesi yapıldı. Bu klasör içerinde SQL DBA için gerekli bakım scriptlerinin paylaşılması sağlandı. 
 
