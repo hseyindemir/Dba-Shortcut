@@ -188,15 +188,15 @@ function Install-PostSql {
         try {      
             Write-Host "Started Post Installation on SQL Server" -ForegroundColor Green -BackgroundColor Black
             
-            foreach ($f in Get-ChildItem -path $filepath -Filter *.sql -ea 1 | sort-object fullname )  { 
+            foreach ($f in Get-ChildItem -path $postScriptPath -Filter *.sql -ea 1 | sort-object fullname )  { 
                
                 $SqlFile = $f.fullname
                 invoke-sqlcmd -ServerInstance $serverName -Database $databaseName -InputFile $f.fullname -ea 1 -QueryTimeout 600 # | out-file -filepath $out -ea 0
                 Write-Host "# OK: $SqlFile"
                 $SqlFile = $NULL
-                #Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 1
                 }
-            ############### End of SQL Scripts Loop ###############
+           
              Write-Host "Finished Post Installation on SQL Server"
         }
         catch {

@@ -26,39 +26,42 @@ function Generate-IndexScript {
         [Parameter(Position = 6 , Mandatory = $true , ValuefromPipeline = $true)]
         [ValidateSet('ON','OFF')]
         [string]
-        $DropExisting
+        $DropExisting,
         #Included Field Parameters
         [Parameter(Position = 7, ValuefromPipeline = $true)]
         [String[]]
         $IncludedFields,
+        [Parameter(Position = 8, ValuefromPipeline = $true)]
+        [String[]]
+        $FileGroup
 
     )
     
     begin 
     {
-        Write-Host 'Generating Index Script in T-SQL Format'
+        Write-Host 'Generating Index Script in T-SQL Format' -BackgroundColor Black -ForegroundColor Green
+        Write-Host '---------------------------------------------------------------------------------------'
         $IndexName = 'NCIX_' + $TableName + '_' + $FieldNames[0]
         #Make comma between FieldNames
         $FieldNamesCommaVersion = New-Object System.Collections.ArrayList
-        $K = 0
 
         foreach ($item in $FieldNames) 
         
         {
-            $FieldNamesCommaVersion.Add($item)
-            $FieldNamesCommaVersion.Add(',')
+            $FieldNamesCommaVersion.Add($item) > $null
+            $FieldNamesCommaVersion.Add(',') > $null
         }
-        $FieldNamesCommaVersion.RemoveAt($FieldNamesCommaVersion.count - 1)
+        #$FieldNamesCommaVersion.RemoveAt($FieldNamesCommaVersion.count - 1)
 
         #Make comma between IncludedFields
         $IncludedFieldNamesCommaVersion = New-Object System.Collections.ArrayList
         foreach ($item in $IncludedFields) 
         
         {
-            $IncludedFieldNamesCommaVersion.Add($item)
-            $IncludedFieldNamesCommaVersion.Add(',')
+            $IncludedFieldNamesCommaVersion.Add($item) > $null
+            $IncludedFieldNamesCommaVersion.Add(',') > $null
         }
-        $IncludedFieldNamesCommaVersion.RemoveAt($IncludedFieldNamesCommaVersion.count - 1)
+        #$IncludedFieldNamesCommaVersion.RemoveAt($IncludedFieldNamesCommaVersion.count - 1)
 
 
     }
@@ -68,24 +71,46 @@ function Generate-IndexScript {
         #Generate Script if IncludedFields is Null
         if ($IncludedFields -eq 0) 
         {
-            $IndexScript = 'CREATE ' + $IndexType + ' INDEX ' + $IndexName + ' ON [dbo].'+ $TableName + '(' + $FieldNamesCommaVersion + 
-            ') WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF,ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, ' + 'MAXDOP = ' + $MaxDop + ',FILFACTOR = ' + $FillFactor +',DROP_EXISTING = ' +$DropExisting+'ONLINE= '+$Online +')'
+            if (([string]::IsNullOrEmpty($FileGroup)))
+            {
+                $IndexScript = 'CREATE ' + $IndexType + ' INDEX ' + $IndexName + ' ON [dbo].'+ $TableName + '(' + $FieldNamesCommaVersion + 
+                ') WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF,ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, ' + 'MAXDOP = ' + $MaxDop + ',FILFACTOR = ' + $FillFactor +',DROP_EXISTING = ' +$DropExisting+' ONLINE= '+$Online +')'
+                
+            }
+            else 
+            {
+                $IndexScript = 'CREATE ' + $IndexType + ' INDEX ' + $IndexName + ' ON [dbo].'+ $TableName + '(' + $FieldNamesCommaVersion + 
+                ') WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF,ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, ' + 'MAXDOP = ' + $MaxDop + ',FILFACTOR = ' + $FillFactor +',DROP_EXISTING = ' +$DropExisting+' ONLINE= '+$Online +') ON ['+ $FileGroup +']'
+                
+            }
+           
         }
         else 
         {
-            $IndexScript = 'CREATE ' + $IndexType + ' INDEX ' + $IndexName + ' ON [dbo].'+ $TableName + '(' + $FieldNamesCommaVersion + 
-            ') '+ 'INCLUDE('+$IncludedFieldNamesCommaVersion+') ' +'WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF,ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, ' + 'MAXDOP = ' + $MaxDop + ',FILFACTOR = ' + $FillFactor +',DROP_EXISTING = ' +$DropExisting+'ONLINE= '+$Online +')'
+            if (([string]::IsNullOrEmpty($FileGroup)))
+            {
+                $IndexScript = 'CREATE ' + $IndexType + ' INDEX ' + $IndexName + ' ON [dbo].'+ $TableName + '(' + $FieldNamesCommaVersion + 
+                ') '+ 'INCLUDE('+$IncludedFieldNamesCommaVersion+') ' +'WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF,ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, ' + 'MAXDOP = ' + $MaxDop + ',FILFACTOR = ' + $FillFactor +',DROP_EXISTING = ' +$DropExisting+' ONLINE= '+$Online +')' 
+            }
+            else 
+            {
+                $IndexScript = 'CREATE ' + $IndexType + ' INDEX ' + $IndexName + ' ON [dbo].'+ $TableName + '(' + $FieldNamesCommaVersion + 
+                ') '+ 'INCLUDE('+$IncludedFieldNamesCommaVersion+') ' +'WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF,ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, ' + 'MAXDOP = ' + $MaxDop + ',FILFACTOR = ' + $FillFactor +',DROP_EXISTING = ' +$DropExisting+' ONLINE= '+$Online +') ON ['+ $FileGroup +']' 
+            }
+            
         }
        
        
-        #Generate Script if IncludedFields is Not Null
+       
         Write-Host $IndexScript
     }
     
     end 
     {
-        Write-Host 'Generated Index Script in T-SQL Format.'
+        Write-Host '---------------------------------------------------------------------------------------'
+        Write-Host 'Generated Index Script in T-SQL Format.' -BackgroundColor Black -ForegroundColor Green
     }
+
 }
 
-
+Generate-IndexScript -IndexType NONCLUSTERED -TableName ac_Address -FieldNames userid,testid -FillFactor 80 -MaxDop 8 -Online ON -DropExisting ON -IncludedFields username,lastname -FileGroup INDEX
