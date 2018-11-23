@@ -71,7 +71,7 @@ Versiyon 3.3.3
 - Install-MaintenancePack : whoisactive ve OLA gibi temel bakım prosedürlerini veritabanına yükleyen fonksiyon geliştirmesi yapıldı.
 - Maintenance-Starter-Pack klasörü eklenmesi yapıldı. Bu klasör içerinde SQL DBA için gerekli bakım scriptlerinin paylaşılması sağlandı. 
 
-Versiyon 3.4.3(Geliştirilme Aşamasında)
+Versiyon 3.4.3
 
-- Generate-FailoverScript Function
-- Generate-ConnectionString4App Function
+- Install-PostSql : Parametre isimleri nedeniyle yaşanan hata giderildi.
+- Generate-IndexScript : Indexlerin kurulabileceği filegroup opsiyonu eklendi.
