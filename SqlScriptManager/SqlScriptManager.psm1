@@ -112,5 +112,3 @@ function Generate-IndexScript {
     }
 
 }
-
-Generate-IndexScript -IndexType NONCLUSTERED -TableName ac_Address -FieldNames userid,testid -FillFactor 80 -MaxDop 8 -Online ON -DropExisting ON -IncludedFields username,lastname -FileGroup INDEX
