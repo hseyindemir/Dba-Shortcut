@@ -112,3 +112,19 @@ function Generate-IndexScript {
     }
 
 }
+
+function Generate-FailOverScript {
+    [CmdletBinding()]
+    param (
+        
+    )
+    
+    begin {
+    }
+    
+    process {
+    
+    
+    end {
+    }
+}
