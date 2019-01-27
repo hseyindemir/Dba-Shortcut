@@ -34,5 +34,6 @@ Mevcut Versiyon : 3.4.4
 
 | Özellik Tanımı  | Kullanıma Açılacak Versiyon |
 | ------------- | ------------- |
-| Failover Script Üreten Fonksiyonu(Powershell)  | 3.4.5  |
-| Toplu Sunucu Restart Yönetim Fonksiyonu(Powershell)  | 3.4.5  |
+| Failover Script Üreten Fonksiyonu(Powershell-SQL Server)  | 3.4.5  |
+| Toplu Sunucu Restart Yönetim Fonksiyonu(Powershell-SQL Server)  | 3.4.5  |
+| Idle in Transaction Temizliği(PLSQL-PostgreSQL)  | 3.4.5  |
