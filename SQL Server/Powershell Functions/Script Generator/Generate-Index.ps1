@@ -1,4 +1,17 @@
 function Generate-IndexScript {
+
+<#
+    .SYNOPSIS
+    SQL Server Index (T-SQL Blok) Üreten Fonksiyon
+    .DESCRIPTION
+    SQL Server t-sql dilinde index oluşturan scripti üreten fonksiyondur. Buradaki amac, index oluştururken kullanılan parametre ve argumanların unutulmaması ve hatasız script yazılmasıdır.
+    .EXAMPLE
+
+    .NOTES
+    Author: Huseyin Demir
+    Date:   January 27, 2019    
+#>
+
     [CmdletBinding()]
     param (
         
@@ -51,7 +64,7 @@ function Generate-IndexScript {
             $FieldNamesCommaVersion.Add($item) > $null
             $FieldNamesCommaVersion.Add(',') > $null
         }
-        #$FieldNamesCommaVersion.RemoveAt($FieldNamesCommaVersion.count - 1)
+        $FieldNamesCommaVersion.RemoveAt($FieldNamesCommaVersion.count - 1)
 
         #Make comma between IncludedFields
         $IncludedFieldNamesCommaVersion = New-Object System.Collections.ArrayList
@@ -61,7 +74,7 @@ function Generate-IndexScript {
             $IncludedFieldNamesCommaVersion.Add($item) > $null
             $IncludedFieldNamesCommaVersion.Add(',') > $null
         }
-        #$IncludedFieldNamesCommaVersion.RemoveAt($IncludedFieldNamesCommaVersion.count - 1)
+        $IncludedFieldNamesCommaVersion.RemoveAt($IncludedFieldNamesCommaVersion.count - 1)
 
 
     }
