@@ -1,4 +1,18 @@
 function Restore-FullBackup {
+
+    <#
+    .SYNOPSIS
+    SQL Server Restore İşlemleri için Kullanılan Fonksiyon.
+    .DESCRIPTION
+    SQL Server backup path'i verildikten sonra o dizinde bulunan son full backup ve üzerine transaction log backupları restore eden fonksiyondur.
+    .EXAMPLE
+   Restore-FullBackup -RestoreServer localhost -DatabaseName test -NoRecovery -Path \\network\B$\Backup
+   Restore-FullBackup -RestoreServer localhost -DatabaseName test -NoRecovery -Path B:\Backup
+   Restore-FullBackup -RestoreServer localhost -DatabaseName test -Path B:\Backup
+    .NOTES
+    Author: Huseyin Demir
+    Date:   January 27, 2019    
+#>
     [CmdletBinding()]
     param 
     (

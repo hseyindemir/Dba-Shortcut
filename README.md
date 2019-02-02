@@ -30,10 +30,10 @@ Import-Module SqlDbaManager_dosya_yolu\SqlDbaManager.psd1
 ```
 # Geliştirme Aşamasındaki Özellikler
 
-Mevcut Versiyon : 3.4.4
+Mevcut Versiyon : 3.4.5
 
 | Özellik Tanımı  | Kullanıma Açılacak Versiyon |
 | ------------- | ------------- |
-| Failover Script Üreten Fonksiyonu(Powershell-SQL Server)  | 3.4.5  |
-| Toplu Sunucu Restart Yönetim Fonksiyonu(Powershell-SQL Server)  | 3.4.5  |
-| Idle in Transaction Temizliği(PLSQL-PostgreSQL)  | 3.4.5  |
+| Failover Script Üreten Fonksiyonu(Powershell-SQL Server)  | 3.5.5  |
+| Toplu Sunucu Restart Yönetim Fonksiyonu(Powershell-SQL Server)  | 3.5.5  |
+| Idle in Transaction Temizliği(PLSQL-PostgreSQL)  | 3.5.5  |
